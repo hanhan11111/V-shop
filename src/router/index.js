@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/login.vue'
 import Home from '../components/Home.vue'
+import { TabPane } from 'element-ui'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,18 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+//挂在路由导航首位
+router.beforeEach((to, from, next) => {
+  //to将要访问路径
+  //from代表从哪个路径跳转而来
+  //next是一个函数 表示放行 next('/login')强制跳转
+  if (to.path === '/login') return next()
+  const tokenStr = window.sessionStorage.getItem('token')
+  if (!tokenStr) return next('/login')
+  next()
+
 })
 
 export default router
